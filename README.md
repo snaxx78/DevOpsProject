@@ -40,7 +40,7 @@ To run the application you need to be in the ./userApi folder and run the follow
 `npm start`  
 It will start the server at the following address :  `http://localhost:3000`  
 
-![alt text](..\images\image.png)  
+![alt text](.\images\image.png)  
 
 # LIST OF REQUEST :
 
@@ -113,12 +113,12 @@ We also created a health endpoint that can give you health information of the we
 ```
 \n
 ## API SWAGGER 
-We also set up a swagger thanks to swagger-JSdoc which allows you to test the API at the following url: http://localhost:3000/api-docs He looks like this : ![alt text](../images/swagger.png)  
+We also set up a swagger thanks to swagger-JSdoc which allows you to test the API at the following url: http://localhost:3000/api-docs He looks like this : ![alt text](./images/swagger.png)  
 
 ## API TESTS
 
 We made a serie of tests verify that the API's working well you can try them by running the following command : `npm run test`
 And it will show you the results of all the tests :
-![alt text](../images/tests.png)  
+![alt text](./images/tests.png)  
 You can see that in the tests we try things that can 'break' the app, like creating an existing user, deleting a non existing user ect.  
 If all is green that's significate that all is working.
