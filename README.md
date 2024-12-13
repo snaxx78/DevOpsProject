@@ -38,7 +38,7 @@ If you cant install REDIS on your computer you can run the following command `do
 
 To run the application you need to be in the ./userApi folder and run the following command :  
 `npm start`  
-It will start the server at the following address : > http://localhost:3000  
+It will start the server at the following address :  `http://localhost:3000`  
 
 ![alt text](..\images\image.png)  
 
