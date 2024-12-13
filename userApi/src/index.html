@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Charset and viewport definition for mobile responsiveness -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API Documentation</title>
+
+    <!-- Basic styles for the page -->
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 40px;
+      }
+      h1 {
+        text-align: center; /* Center-aligns the main heading */
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse; /* Ensures table borders don't overlap */
+        margin-top: 20px; /* Adds top margin for spacing */
+      }
+      th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left; /* Aligns text to the left */
+      }
+      th {
+        background-color: #f2f2f2; /* Sets background color for table headers */
+      }
+      .important {
+        color: red; /* Red text for important information */
+        font-weight: bold; /* Makes important text bold */
+      }
+      .links {
+        margin-top: 20px; /* Adds margin for links section */
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Base API App and Documentation</h1>
+
+    <h2>CRUD Operations</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>Path</th>
+          <th>Parameter</th>
+          <th>Infos</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>POST</td>
+          <td>/user</td>
+          <td>none</td>
+          <td>Add a new user. Request format: {'username': '', 'firstname': '', 'lastname': ''}</td>
+        </tr>
+        <tr>
+          <td>GET</td>
+          <td>/user/keys</td>
+          <td>none</td>
+          <td>Retrieve all keys.</td>
+        </tr>
+        <tr>
+          <td>GET</td>
+          <td>/user/:username</td>
+          <td>username</td>
+          <td>Retrieve a specific user.</td>
+        </tr>
+        <tr>
+          <td>DELETE</td>
+          <td>/user/:username</td>
+          <td>username</td>
+          <td>Delete a specific user.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Other Routes</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>Path</th>
+          <th>Parameter</th>
+          <th>Infos</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>GET</td>
+          <td>/health</td>
+          <td>none</td>
+          <td>Check the health status</td>
+        </tr>
+        <tr>
+          <td>GET</td>
+          <td>/api-docs</td>
+          <td>none</td>
+          <td>Obtain complete documentation of the API</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>
