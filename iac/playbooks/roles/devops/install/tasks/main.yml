@@ -1,0 +1,43 @@
+---
+- name: Install required packages
+  yum:
+    name:
+      - curl
+      - openssh-server
+      - perl
+      - redis
+      - nodejs
+      - npm
+      - firewalld
+    state: latest
+
+- name: Enable and start sshd
+  service:
+    name: sshd
+    state: started
+    enabled: yes
+
+- name: Enable HTTP+HTTPS access
+  firewalld:
+    # This is how we use a variable
+    service: "{{ item }}"
+    permanent: yes
+    state: enabled
+  # The module will be run for each item
+  with_items:
+    - http
+    - https
+
+- name: Reload firewalld
+  service:
+    name: firewalld
+    state: reloaded
+
+- name: Starting REDIS
+  command: "sudo systemctl start redis"
+
+- name: Install Node Packages
+  command: "npm install --prefix /home/vagrant/"
+
+- name: Changing Launcher Perms
+  command: "chmod +x /vagrant/launcher.sh"

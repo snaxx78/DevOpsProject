@@ -1,0 +1,13 @@
+- hosts: devops
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  # Run commands as root
+  become: true
+
+  # Roles to be executed on these hosts
+  roles:
+    - role: devops/install
+      tags: install
+
+    - role: devops/healthchecks
+      tags: integrity
