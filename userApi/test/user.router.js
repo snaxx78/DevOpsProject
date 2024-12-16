@@ -154,59 +154,67 @@ describe('User REST API', () => {
   });
   describe('PUT /Update', () => {
 
-    // Test pour la mise à jour réussie d'un utilisateur
+    // Test case to successfully update an existing user
     it('should update an existing user successfully', (done) => {
       const user = {
-        username: 'snaxx',
+        username: 'snaxx',         // Original user data
         firstname: 'Thibault',
         lastname: 'Leonardon'
       };
       const updatedData = {
-        username: 'snaxx',
+        username: 'snaxx',         // Same username for update
         firstname: 'UpdatedFirstname',
         lastname: 'UpdatedLastname'
       };
 
-      // Créer d'abord l'utilisateur
+      // First, create the user in the database
       userController.create(user, (err, result) => {
+        // Check if there was no error during user creation
         chai.expect(err).to.be.equal(null);
         chai.expect(result).to.be.equal('OK');
 
-        // Mettre à jour l'utilisateur
+        // Now update the user with new data
         userController.update(updatedData, (err, res) => {
-          chai.expect(err).to.be.equal(null); // Aucune erreur
-          chai.expect(res).to.be.equal('User updated successfully'); // Message de succès
+          // Check if there was no error during the update
+          chai.expect(err).to.be.equal(null); 
+          chai.expect(res).to.be.equal('User updated successfully'); 
 
-          // Vérifier que les données sont mises à jour
+          // Fetch the user to verify the update
           userController.get(user.username, (err, result) => {
+            // Check if there was no error while fetching the updated user
             chai.expect(err).to.be.equal(null);
+            // Verify that the user data matches the updated values
             chai.expect(result).to.deep.equal({
               firstname: 'UpdatedFirstname',
               lastname: 'UpdatedLastname'
             });
-            done();
+            done();  // Finish the test
           });
         });
       });
     });
 
-    // Test pour la mise à jour d'un utilisateur qui n'existe pas
+    // Test case to handle updating a non-existing user
     it('should return an error when trying to update a non-existing user', (done) => {
       const updatedData = {
-        username: 'invalidUser',
+        username: 'invalidUser',  // Username that does not exist
         firstname: 'Firstname',
         lastname: 'Lastname'
       };
 
+      // Attempt to update a user that does not exist
       userController.update(updatedData, (err, res) => {
-        chai.expect(err).to.not.be.equal(null); // Une erreur est attendue
-        chai.expect(err.message).to.be.equal("User doesn\'t exist"); // Message d'erreur attendu
+        // Ensure an error occurs
+        chai.expect(err).to.not.be.equal(null); 
+        // Check if the error message indicates the user doesn't exist
+        chai.expect(err.message).to.be.equal("User doesn't exist"); 
+        // The result should be null since no update happened
         chai.expect(res).to.be.equal(null);
-        done();
+        done();  // Finish the test
       });
     });
 
-    // Test pour des paramètres invalides dans la mise à jour
+    // Test case to handle invalid update data (missing necessary fields)
     it('should return an error when update data is invalid', (done) => {
       const user = {
         username: 'snaxx',
@@ -214,26 +222,32 @@ describe('User REST API', () => {
         lastname: 'Leonardon'
       };
 
-      // Créer l'utilisateur d'abord
+      // First, create the user in the database
       userController.create(user, (err, result) => {
+        // Ensure there is no error during user creation
         chai.expect(err).to.be.equal(null);
         chai.expect(result).to.be.equal('OK');
 
-        // Envoyer des données invalides
+        // Now attempt to update with invalid data (missing 'firstname')
         const invalidUpdateData = {
           username: 'snaxx',
-          firstname: '' // Champ vide (invalide)
+          firstname: ''  // Empty firstname is invalid
         };
 
+        // Try updating the user with invalid data
         userController.update(invalidUpdateData, (err, res) => {
-          chai.expect(err).to.not.be.equal(null); // Erreur attendue
-          chai.expect(err.message).to.be.equal('At least one field (firstname or lastname) must be provided'); // Message d'erreur
+          // Ensure an error occurs due to invalid data
+          chai.expect(err).to.not.be.equal(null); 
+          // Check if the error message indicates the issue with missing or empty fields
+          chai.expect(err.message).to.be.equal('At least one field (firstname or lastname) must be provided'); 
+          // The result should be null since no update can proceed
           chai.expect(res).to.be.equal(null);
-          done();
+          done();  // Finish the test
         });
       });
     });
   });
+
 
   describe('DELETE /user', () => {
 

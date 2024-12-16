@@ -102,7 +102,7 @@ describe('User', () => {
 
   describe('Update', () => {
     
-    // Test pour mettre à jour un utilisateur existant
+    // Test case for updating an existing user
     it('update an existing user', (done) => {
       const user = {
         username: 'snaxx',
@@ -115,46 +115,54 @@ describe('User', () => {
         lastname: 'leo'
       };
 
-      // Créer un utilisateur
+      // First, create a user
       userController.create(user, (err, result) => {
+        // Ensure no error occurs during user creation
         expect(err).to.be.equal(null);
         expect(result).to.be.equal('OK');
 
-        // Mettre à jour l'utilisateur
+        // Now, update the user with new data
         userController.update(updatedData, (err, result) => {
+          // Ensure no error occurs during update
           expect(err).to.be.equal(null);
           expect(result).to.be.equal('User updated successfully');
 
-          // Récupérer l'utilisateur mis à jour pour vérifier les changements
+          // Retrieve the user to verify the update
           userController.get(user.username, (err, result) => {
+            // Ensure no error occurs when fetching the user
             expect(err).to.be.equal(null);
+            // Ensure the user data matches the updated information
             expect(result).to.be.deep.equal({
               firstname: 'tibo',
               lastname: 'leo'
             });
-            done();
+            done(); // Finish the test
           });
         });
       });
     });
 
-    // Test pour tenter de mettre à jour un utilisateur qui n'existe pas
+    // Test case for trying to update a non-existent user
     it('fail to update a non-existent user', (done) => {
       const updatedData = {
-        username: 'nonexistent',
+        username: 'nonexistent', // Username that doesn't exist
         firstname: 'tibo',
         lastname: 'leo'
       };
 
+      // Attempt to update a non-existent user
       userController.update(updatedData, (err, result) => {
+        // Ensure an error occurs
         expect(err).to.not.be.equal(null);
-        expect(err.message).to.be.equal("User doesn\'t exist");
+        // Check that the error message specifies the user doesn't exist
+        expect(err.message).to.be.equal("User doesn't exist");
+        // The result should be null since no update can happen
         expect(result).to.be.equal(null);
-        done();
+        done(); // Finish the test
       });
     });
 
-    // Test pour gérer des données invalides lors de la mise à jour
+    // Test case for updating with invalid data (missing 'username')
     it('fail to update with invalid data', (done) => {
       const user = {
         username: 'snaxx',
@@ -162,20 +170,24 @@ describe('User', () => {
         lastname: 'Leonardon'
       };
       const invalidData = {
-        firstname: 'tibo' // Pas de "username" pour identifier l'utilisateur
+        firstname: 'tibo' // Missing the 'username' field
       };
 
-      // Créer un utilisateur pour tester
+      // First, create a user
       userController.create(user, (err, result) => {
+        // Ensure no error occurs during user creation
         expect(err).to.be.equal(null);
         expect(result).to.be.equal('OK');
 
-        // Tenter de mettre à jour avec des données invalides
+        // Attempt to update the user with invalid data
         userController.update(invalidData, (err, result) => {
+          // Ensure an error occurs due to missing username
           expect(err).to.not.be.equal(null);
+          // Check that the error message indicates that 'username' is required
           expect(err.message).to.be.equal('Username must be provided');
+          // The result should be null since the update can't proceed
           expect(result).to.be.equal(null);
-          done();
+          done(); // Finish the test
         });
       });
     });
