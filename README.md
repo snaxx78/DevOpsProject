@@ -30,7 +30,7 @@ To run the project you'll need to have the following programs installed on your 
 
 # APP USAGE
 
-The very principle of the web application is a REST API allowing the user to use CRUD functionalities using a REDIS database.  
+The very principe of the web application is a REST API allowing the user to use CRUD functionalities using a REDIS database.  
 After downloading the project use `npm install` to install the packages because they aren't present and need to be installed manually.  
 If you cant install REDIS on your computer you can run the following command `docker compose up -d` from the misc folder and it will use a docker image of REDIS.  
 
