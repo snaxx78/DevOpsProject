@@ -127,8 +127,8 @@ userRouter
 
   /**
    * @swagger
-   * /update:
-   *   put:
+   * /user:
+   *   patch:
    *     summary: Update an existing user
    *     description: Update the details of an existing user in the database.
    *     requestBody:
@@ -178,7 +178,7 @@ userRouter
    *                   type: string
    *                   example: "Error message describing what went wrong."
    */
-  .put("/update", (req, resp) => {
+  .patch("/", (req, resp) => {
     userController.update(req.body, (err, res) => {
       let respObj;
       if (err) {

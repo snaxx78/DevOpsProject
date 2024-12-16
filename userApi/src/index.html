@@ -39,9 +39,18 @@
     </style>
   </head>
   <body>
-    <h1>Base API App and Documentation</h1>
+    <h1>API App and Documentation</h1>
+
+    <p>Welcome to our DevOps project home page.</p>
 
     <h2>CRUD Operations</h2>
+
+    <p>
+      Here are listed all the methods and API path we created. For a detailed
+      documentation please check our complete doc:
+      <a href="/api-docs">/api-docs</a>
+    </p>
+
     <table>
       <thead>
         <tr>
@@ -57,13 +66,28 @@
           <td>/user</td>
           <td>none</td>
           <td>
-            Add a new user. Request format: {'username': '', 'firstname': '',
-            'lastname': ''}
+            Add a new user. Body format (json): {"username": "", "firstname":
+            "", "lastname": ""}
           </td>
         </tr>
         <tr>
+          <td>PATCH</td>
+          <td>/user</td>
+          <td>none</td>
+          <td>
+            Update the content of an existing user. Body format (json):
+            {"username": "", "firstname": "", "lastname": ""}
+          </td>
+        </tr>
+        <tr>
+          <td>DELETE</td>
+          <td>/user/:username</td>
+          <td>username</td>
+          <td>Delete a specific user.</td>
+        </tr>
+        <tr>
           <td>GET</td>
-          <td>/user/keys</td>
+          <td><a href="/user/keys">/user/keys</a></td>
           <td>none</td>
           <td>Retrieve all keys.</td>
         </tr>
@@ -73,16 +97,13 @@
           <td>username</td>
           <td>Retrieve a specific user.</td>
         </tr>
-        <tr>
-          <td>DELETE</td>
-          <td>/user/:username</td>
-          <td>username</td>
-          <td>Delete a specific user.</td>
-        </tr>
       </tbody>
     </table>
 
     <h2>Other Routes</h2>
+
+    <p>Here are the secondary API routes we defined for our project:</p>
+
     <table>
       <thead>
         <tr>
@@ -95,7 +116,7 @@
       <tbody>
         <tr>
           <td>GET</td>
-          <td>/health/api</td>
+          <td><a href="/health/api">/health/api</a></td>
           <td>none</td>
           <td>Check the application health status</td>
         </tr>
@@ -104,13 +125,13 @@
       <tbody>
         <tr>
           <td>GET</td>
-          <td>/health/redis</td>
+          <td><a href="/health/redis">/health/redis</a></td>
           <td>none</td>
           <td>Check the Redis database health status</td>
         </tr>
         <tr>
           <td>GET</td>
-          <td>/api-docs</td>
+          <td><a href="/api-docs">/api-docs</a></td>
           <td>none</td>
           <td>Obtain complete documentation of the API</td>
         </tr>

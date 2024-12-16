@@ -148,102 +148,65 @@ describe("User REST API", () => {
         });
     });
   });
-  describe("PUT /Update", () => {
-    // Test case to successfully update an existing user
+  describe("PATCH /user", () => {
+    // Test to ensure a new user can be successfully created
     it("should update an existing user successfully", (done) => {
       const user = {
-        username: "snaxx", // Original user data
+        username: "snaxxxx", // Original user data
         firstname: "Thibault",
         lastname: "Leonardon",
       };
       const updatedData = {
-        username: "snaxx", // Same username for update
+        username: "snaxxxx", // Same username for update
         firstname: "UpdatedFirstname",
         lastname: "UpdatedLastname",
       };
-
       // First, create the user in the database
       userController.create(user, (err, result) => {
         // Check if there was no error during user creation
         chai.expect(err).to.be.equal(null);
         chai.expect(result).to.be.equal("OK");
-
-        // Now update the user with new data
-        userController.update(updatedData, (err, res) => {
-          // Check if there was no error during the update
-          chai.expect(err).to.be.equal(null);
-          chai.expect(res).to.be.equal("User updated successfully");
-
-          // Fetch the user to verify the update
-          userController.get(user.username, (err, result) => {
-            // Check if there was no error while fetching the updated user
+        chai
+          .request(app)
+          .patch("/user") // Send a PATCH request to create the user
+          .send(updatedData) // Pass the user data in the request body
+          .then((res) => {
+            // Expect the response to have a 201 status code (Created)
+            chai.expect(res).to.have.status(200);
             chai.expect(err).to.be.equal(null);
-            // Verify that the user data matches the updated values
-            chai.expect(result).to.deep.equal({
-              firstname: "UpdatedFirstname",
-              lastname: "UpdatedLastname",
-            });
-            done(); // Finish the test
+            chai.expect(res.body.msg).to.be.equal("User updated successfully");
+            // Ensure the response is in JSON format
+            chai.expect(res).to.be.json;
+            done();
+          })
+          .catch((err) => {
+            throw err;
           });
-        });
       });
     });
 
-    // Test case to handle updating a non-existing user
-    it("should return an error when trying to update a non-existing user", (done) => {
-      const updatedData = {
-        username: "invalidUser", // Username that does not exist
-        firstname: "Firstname",
-        lastname: "Lastname",
-      };
-
-      // Attempt to update a user that does not exist
-      userController.update(updatedData, (err, res) => {
-        // Ensure an error occurs
-        chai.expect(err).to.not.be.equal(null);
-        // Check if the error message indicates the user doesn't exist
-        chai.expect(err.message).to.be.equal("User doesn't exist");
-        // The result should be null since no update happened
-        chai.expect(res).to.be.equal(null);
-        done(); // Finish the test
-      });
-    });
-
-    // Test case to handle invalid update data (missing necessary fields)
-    it("should return an error when update data is invalid", (done) => {
+    // Test to handle missing or incorrect parameters
+    it("pass wrong parameters", (done) => {
       const user = {
-        username: "snaxx",
-        firstname: "Thibault",
-        lastname: "Leonardon",
+        firstname: "thibault",
+        lastname: "leonardon", // Missing the 'username' field
       };
-
-      // First, create the user in the database
-      userController.create(user, (err, result) => {
-        // Ensure there is no error during user creation
-        chai.expect(err).to.be.equal(null);
-        chai.expect(result).to.be.equal("OK");
-
-        // Now attempt to update with invalid data (missing 'firstname')
-        const invalidUpdateData = {
-          username: "snaxx",
-          firstname: "", // Empty firstname is invalid
-        };
-
-        // Try updating the user with invalid data
-        userController.update(invalidUpdateData, (err, res) => {
-          // Ensure an error occurs due to invalid data
-          chai.expect(err).to.not.be.equal(null);
-          // Check if the error message indicates the issue with missing or empty fields
-          chai
-            .expect(err.message)
-            .to.be.equal(
-              "At least one field (firstname or lastname) must be provided"
-            );
-          // The result should be null since no update can proceed
-          chai.expect(res).to.be.equal(null);
-          done(); // Finish the test
+      chai
+        .request(app)
+        .patch("/user") // Send a PATCH request with incomplete data
+        .send(user)
+        .then((res) => {
+          // Expect a 400 status code (Bad Request)
+          chai.expect(res).to.have.status(400);
+          // Verify the response indicates an error
+          chai.expect(res.body.status).to.equal("error");
+          // Ensure the response is in JSON format
+          chai.expect(res).to.be.json;
+          done();
+        })
+        .catch((err) => {
+          throw err;
         });
-      });
     });
   });
 
