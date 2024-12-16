@@ -33,6 +33,30 @@ module.exports = {
       else callback(new Error("User doesn't exists"), null);
     });
   },
+  update: (user, callback) => {
+    if (!user.username)
+      return callback(new Error("Username must be provided"), null);
+    if (!user.firstname && !user.lastname)
+      return callback(new Error("At least one field (firstname or lastname) must be provided"), null);
+
+    db.hgetall(user.username, function (err, res) {
+      if (err) return callback(err, null);
+
+      if (res) {
+        const updatedUser = {
+          firstname: user.firstname || res.firstname, 
+          lastname: user.lastname || res.lastname,  
+        };
+
+        db.hmset(user.username, updatedUser, (err, res) => {
+          if (err) return callback(err, null);
+          callback(null, "User updated successfully");
+        });
+      } else {
+        callback(new Error("User doesn't exist"), null);
+      }
+    });
+  },
   delete: (username, callback) => {
     if (!username)
       return callback(new Error("Username must be provided"), null);

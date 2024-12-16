@@ -100,6 +100,87 @@ describe('User', () => {
     });
   });
 
+  describe('Update', () => {
+    
+    // Test pour mettre à jour un utilisateur existant
+    it('update an existing user', (done) => {
+      const user = {
+        username: 'snaxx',
+        firstname: 'Thibault',
+        lastname: 'Leonardon'
+      };
+      const updatedData = {
+        username: 'snaxx',
+        firstname: 'tibo',
+        lastname: 'leo'
+      };
+
+      // Créer un utilisateur
+      userController.create(user, (err, result) => {
+        expect(err).to.be.equal(null);
+        expect(result).to.be.equal('OK');
+
+        // Mettre à jour l'utilisateur
+        userController.update(updatedData, (err, result) => {
+          expect(err).to.be.equal(null);
+          expect(result).to.be.equal('User updated successfully');
+
+          // Récupérer l'utilisateur mis à jour pour vérifier les changements
+          userController.get(user.username, (err, result) => {
+            expect(err).to.be.equal(null);
+            expect(result).to.be.deep.equal({
+              firstname: 'tibo',
+              lastname: 'leo'
+            });
+            done();
+          });
+        });
+      });
+    });
+
+    // Test pour tenter de mettre à jour un utilisateur qui n'existe pas
+    it('fail to update a non-existent user', (done) => {
+      const updatedData = {
+        username: 'nonexistent',
+        firstname: 'tibo',
+        lastname: 'leo'
+      };
+
+      userController.update(updatedData, (err, result) => {
+        expect(err).to.not.be.equal(null);
+        expect(err.message).to.be.equal("User doesn\'t exist");
+        expect(result).to.be.equal(null);
+        done();
+      });
+    });
+
+    // Test pour gérer des données invalides lors de la mise à jour
+    it('fail to update with invalid data', (done) => {
+      const user = {
+        username: 'snaxx',
+        firstname: 'Thibault',
+        lastname: 'Leonardon'
+      };
+      const invalidData = {
+        firstname: 'tibo' // Pas de "username" pour identifier l'utilisateur
+      };
+
+      // Créer un utilisateur pour tester
+      userController.create(user, (err, result) => {
+        expect(err).to.be.equal(null);
+        expect(result).to.be.equal('OK');
+
+        // Tenter de mettre à jour avec des données invalides
+        userController.update(invalidData, (err, result) => {
+          expect(err).to.not.be.equal(null);
+          expect(err.message).to.be.equal('Username must be provided');
+          expect(result).to.be.equal(null);
+          done();
+        });
+      });
+    });
+  });
+
   describe('Delete', () => {
 
     // Test to delete an existing user by username

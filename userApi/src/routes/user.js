@@ -127,6 +127,77 @@ userRouter
 
 
 
+  /**
+ * @swagger
+ * /update:
+ *   put:
+ *     summary: Update an existing user
+ *     description: Update the details of an existing user in the database.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 description: The new username of the user.
+ *                 example: "newUsername"
+ *               firstname:
+ *                 type: string
+ *                 description: The new first name of the user.
+ *                 example: "John"
+ *               lastname:
+ *                 type: string
+ *                 description: The new last name of the user.
+ *                 example: "Doe"
+ *     responses:
+ *       200:
+ *         description: User updated successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "success"
+ *                 msg:
+ *                   type: string
+ *                   example: "User updated successfully"
+ *       400:
+ *         description: Bad request, error updating the user.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "error"
+ *                 msg:
+ *                   type: string
+ *                   example: "Error message describing what went wrong."
+ */
+  .put("/update", (req, resp) => {
+    userController.update(req.body, (err, res) => {
+      let respObj
+      if (err) {
+        respObj = {
+          status: "error",
+          msg: err.message,
+        };
+        return resp.status(400).json(respObj)
+      }
+      respObj = {
+        status: "success",
+        msg: res,
+      };
+      resp.status(200).json(respObj)
+    });
+  })
+
 /**
  * @swagger
  * /user/{username}:
