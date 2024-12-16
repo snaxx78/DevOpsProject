@@ -1,4 +1,4 @@
-const db = require('../dbClient');
+const db = require("../dbClient");
 
 module.exports = {
   create: (user, callback) => {
@@ -37,15 +37,20 @@ module.exports = {
     if (!user.username)
       return callback(new Error("Username must be provided"), null);
     if (!user.firstname && !user.lastname)
-      return callback(new Error("At least one field (firstname or lastname) must be provided"), null);
+      return callback(
+        new Error(
+          "At least one field (firstname or lastname) must be provided"
+        ),
+        null
+      );
 
     db.hgetall(user.username, function (err, res) {
       if (err) return callback(err, null);
 
       if (res) {
         const updatedUser = {
-          firstname: user.firstname || res.firstname, 
-          lastname: user.lastname || res.lastname,  
+          firstname: user.firstname || res.firstname,
+          lastname: user.lastname || res.lastname,
         };
 
         db.hmset(user.username, updatedUser, (err, res) => {
