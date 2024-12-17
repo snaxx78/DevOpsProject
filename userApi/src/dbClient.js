@@ -16,13 +16,16 @@ db.on("connect", function () {
   console.log("Connected to Redis successfully");
 });
 
-// Capture error event
-db.on("error", function (err) {
-  console.error("Redis connection error: " + err);
+process.on("SIGINT", function () {
+  console.log("Closing Redis connection...");
+  db.quit();
+  process.exit();
 });
 
-process.on("SIGINT", function () {
+process.on("SIGTERM", function () {
+  console.log("Closing Redis connection...");
   db.quit();
+  process.exit();
 });
 
 module.exports = db;

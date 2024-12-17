@@ -9,7 +9,7 @@ services:
       - app-network
   userapi:
     container_name: nodejs-userapi
-    build: ./userApi
+    image: snaxx78/userapi:latest
     ports:
       - "3000:3000"
     environment:
