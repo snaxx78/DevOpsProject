@@ -15,4 +15,10 @@ kubectl apply -f deployment.yaml
 
 Start-Sleep -Seconds 20
 
+kubectl get pods
+kubectl get deployments
+kubectl get services
+kubectl get pvc
+kubectl get pv   
+
 minikube service userapi
