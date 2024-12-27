@@ -71,6 +71,7 @@ spec:
       containers:
         - name: redis
           image: redis:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 6379
           volumeMounts:
@@ -96,6 +97,19 @@ spec:
       labels:
         app: userapi
     spec:
+      initContainers:
+        - name: wait-for-redis
+          image: busybox
+          imagePullPolicy: Always
+          command:
+            - sh
+            - -c
+            - |
+              until nc -z redis 6379; do
+                echo "Waiting for Redis..."
+                sleep 2
+              done
+              echo "Redis is ready!"
       containers:
         - name: userapi
           image: snaxx78/userapi:latest
